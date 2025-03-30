@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #container {
+            width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+        .option {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: lightgray;
+        }
+        .option:hover {
+            background-color: darkgray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz App</h1>
+    <div id="container">
+        <p id="question">Loading question...</p>
+        <div id="options"></div>
+        <p id="result"></p>
+        <button onclick="nextQuestion()">Next Question</button>
+    </div>
+    <script>
+        const quizData = [
+            {
+                question: "What is the capital of France?",
+                options: ["Berlin", "Madrid", "Paris", "Rome"],
+                answer: "Paris"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Earth", "Mars", "Jupiter", "Venus"],
+                answer: "Mars"
+            },
+            {
+                question: "Who wrote 'To Kill a Mockingbird'?",
+                options: ["Harper Lee", "J.K. Rowling", "Mark Twain", "Ernest Hemingway"],
+                answer: "Harper Lee"
+            }
+        ];
+        
+        let currentQuestionIndex = 0;
+        
+        function loadQuestion() {
+            const questionData = quizData[currentQuestionIndex];
+            document.getElementById("question").textContent = questionData.question;
+            const optionsContainer = document.getElementById("options");
+            optionsContainer.innerHTML = "";
+            
+            questionData.options.forEach(option => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.classList.add("option");
+                button.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(button);
+            });
+        }
+        
+        function checkAnswer(selectedOption) {
+            const questionData = quizData[currentQuestionIndex];
+            if (selectedOption === questionData.answer) {
+                document.getElementById("result").textContent = "Correct!";
+            } else {
+                document.getElementById("result").textContent = "Wrong! The correct answer is " + questionData.answer;
+            }
+        }
+        
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                document.getElementById("result").textContent = "";
+                loadQuestion();
+            } else {
+                document.getElementById("question").textContent = "Quiz Completed!";
+                document.getElementById("options").innerHTML = "";
+                document.getElementById("result").textContent = "Thanks for playing!";
+            }
+        }
+        
+        loadQuestion();
+    </script>
+</body>
+</html>
